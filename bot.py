@@ -19,12 +19,12 @@ def load_commands():
         if file_name.endswith(".py"):
             bot.load_extension(f"{config.COMMANDS_FOLDER}.{file_name[:-3]}")
 
-    print("[+] Loaded commands.")
+    print("[+] Loaded cogs.")
 
 
 def main():
     print(config.ASCII_ART)
-    print("[*] Loading commands...")
+    print("[*] Loading cogs...")
     load_commands()
     print("[*] Connecting to discord servers...")
     bot.run(config.TOKEN)
