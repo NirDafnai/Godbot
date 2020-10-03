@@ -1,5 +1,7 @@
-COMMANDS_FOLDER = "commands"
+COMMANDS_FOLDER = "cogs"
 TOKEN = "<YOUR_TOKEN>"
+VOICE_CHANNEL_SUMMON_IDS = []
+TEXT_CHANNEL_ALERT_IDS = []
 ASCII_ART = r"""
 
     __    ________________ 
