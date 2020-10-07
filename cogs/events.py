@@ -28,7 +28,7 @@ class Events(commands.Cog):
                 for reaction in live_message.reactions:
                     if payload.member in await reaction.users().flatten() and reaction.emoji != payload.emoji.name:
                         await live_message.remove_reaction(reaction.emoji, payload.member)
-                return 
+                return
 
 
 def setup(bot: commands.Bot):
