@@ -1,5 +1,5 @@
 COMMANDS_FOLDER = "cogs"
-TOKEN = "NzYxOTQ2NzQ1NDY1ODY0MjEz.X3iANA.U5xr1Vtdhp6r_W4IFiedxqlhdTo"
+TOKEN = "<YOUR TOKEN>"
 LOG_FORMAT = "%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s"
 LOG_FILE = "godbot-logs.txt"
 VOICE_CHANNEL_SUMMON_IDS = []
