@@ -31,7 +31,5 @@ class Events(commands.Cog):
                 break
 
 
-
-
 def setup(bot: commands.Bot):
     bot.add_cog(Events(bot))

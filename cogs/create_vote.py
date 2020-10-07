@@ -4,6 +4,8 @@ import asyncio
 from discord import Embed, RawReactionActionEvent, Message
 from discord.ext import commands
 
+from utils.LoggerFactory import LoggerFactory
+
 AGREE = "✅"
 DISAGREE = "❎"
 
@@ -14,10 +16,11 @@ class CreateVoteCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.context = None
+        self.logger = LoggerFactory.get_logger()
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"[+] CreateVote command ready.")
+        self.logger.info("Create vote ready")
 
     async def create_vote_message(self, vote_question, vote_seconds):
         vote_message = Embed(title="Poll",
@@ -58,7 +61,6 @@ class CreateVoteCog(commands.Cog):
                            f"{least_voted.emoji} - {least_voted.count - 1}")
         CreateVoteCog.votes.remove(vote_message)
         await live_message.delete()
-
 
 
 def setup(bot):
