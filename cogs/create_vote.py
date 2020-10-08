@@ -11,11 +11,11 @@ DISAGREE = "❎"
 
 
 class CreateVoteCog(commands.Cog):
-    votes = []
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.context = None
+        self.votes = []
         self.logger = LoggerFactory.get_logger()
 
     @commands.Cog.listener()
@@ -48,7 +48,7 @@ class CreateVoteCog(commands.Cog):
         vote_message = await self.create_vote_message(vote_question, vote_seconds)
         message_sent = await self.send_vote_message(vote_message)
 
-        CreateVoteCog.votes.append(message_sent)
+        self.votes.append(message_sent)
         await asyncio.sleep(vote_seconds)
         await self.end_poll(context, message_sent, vote_question)
 
@@ -59,8 +59,20 @@ class CreateVoteCog(commands.Cog):
         least_voted = min(live_message.reactions, key=lambda reactions: reactions.count)
         await context.send(f"Question: {vote_question}\n\n{most_voted.emoji} - {most_voted.count - 1}\n\n"
                            f"{least_voted.emoji} - {least_voted.count - 1}")
-        CreateVoteCog.votes.remove(vote_message)
+        self.votes.remove(vote_message)
         await live_message.delete()
+
+    @commands.Cog.listener("on_raw_reaction_add")
+    async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
+        if payload.member.bot:
+            return
+        for vote_message in self.votes:
+            if payload.message_id == vote_message.id:
+                live_message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+                for reaction in live_message.reactions:
+                    if payload.member in await reaction.users().flatten() and reaction.emoji != payload.emoji.name:
+                        await live_message.remove_reaction(reaction.emoji, payload.member)
+                return
 
 
 def setup(bot):
