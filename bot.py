@@ -1,32 +1,37 @@
 import os
+from pathlib import Path
 
-import discord
 from discord.ext import commands
-from pretty_help import PrettyHelp
 
 import config
+from utils.LoggerFactory import LoggerFactory
 
-bot = commands.Bot(command_prefix="!", help_command=PrettyHelp())
+bot = commands.Bot(command_prefix=config.COMMAND_PREFIX, help_command=None)
+logger = LoggerFactory.get_logger()
 
 
 @bot.event
 async def on_ready():
-    print("[+] Connected.")
+    logger.info("Connected")
 
 
 def load_commands():
-    for file_name in os.listdir(config.COMMANDS_FOLDER):
-        if file_name.endswith(".py"):
-            bot.load_extension(f"{config.COMMANDS_FOLDER}.{file_name[:-3]}")
+    logger.info("Loading commands...")
+    with os.scandir(config.COMMANDS_FOLDER) as directory:
+        files = [f for f in directory if f.is_file()]
+        for file_path in files:
+            try:
+                bot.load_extension(f"{config.COMMANDS_FOLDER}.{Path(file_path).stem}")
+            except commands.errors.ExtensionNotFound:
+                logger.warning(f"Could not load file {file_path.name}.")
 
-    print("[+] Loaded cogs.")
+    logger.info("Loaded commands")
 
 
 def main():
-    print(config.ASCII_ART)
-    print("[*] Loading cogs...")
+    logger.info(config.ASCII_ART)
     load_commands()
-    print("[*] Connecting to discord servers...")
+    logger.info("Connecting to discord servers...")
     bot.run(config.TOKEN)
 
 
