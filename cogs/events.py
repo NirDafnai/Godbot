@@ -16,19 +16,8 @@ class Events(commands.Cog):
             if len(after.channel.members) == 1:
                 if after.channel.id in config.VOICE_CHANNEL_SUMMON_IDS:
                     for text_channel_id in config.TEXT_CHANNEL_ALERT_IDS:
-                        await self.bot.get_channel(text_channel_id).send(f"{member.display_name} is summoning @everyone")
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
-        if payload.member.bot:
-            return
-        for vote_message in CreateVoteCog.votes:
-            if payload.message_id == vote_message.id:
-                live_message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
-                for reaction in live_message.reactions:
-                    if payload.member in await reaction.users().flatten() and reaction.emoji != payload.emoji.name:
-                        await live_message.remove_reaction(reaction.emoji, payload.member)
-                return
+                        await self.bot.get_channel(text_channel_id).send(
+                            f"{member.display_name} is summoning @everyone")
 
 
 def setup(bot: commands.Bot):
