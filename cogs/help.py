@@ -18,7 +18,7 @@ class HelpCog(commands.Cog):
         help_message = Embed(title="Commands")
         for command in self.bot.commands:
             command_name = f"{self.bot.command_prefix}{command.name}"
-            if command.clean_params:
+            if command.clean_params is not None:
                 command_name = " ".join([command_name, *[f"{{{param}}}" for param in command.clean_params]])
             help_message.add_field(name=command_name, value=command.description, inline=False)
         await context.send(embed=help_message)

@@ -17,12 +17,13 @@ async def on_ready():
 
 def load_commands():
     logger.info("Loading commands...")
-    files = [f for f in os.scandir(config.COMMANDS_FOLDER) if f.is_file()]
-    for file_path in files:
-        try:
-            bot.load_extension(f"{config.COMMANDS_FOLDER}.{Path(file_path).stem}")
-        except commands.errors.ExtensionNotFound:
-            logger.warning(f"Could not load file {file_path.name}.")
+    with os.scandir(config.COMMANDS_FOLDER) as directory:
+        files = [f for f in directory if f.is_file()]
+        for file_path in files:
+            try:
+                bot.load_extension(f"{config.COMMANDS_FOLDER}.{Path(file_path).stem}")
+            except commands.errors.ExtensionNotFound:
+                logger.warning(f"Could not load file {file_path.name}.")
 
     logger.info("Loaded commands")
 
