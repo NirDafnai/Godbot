@@ -6,7 +6,7 @@ from discord.ext import commands
 import config
 from utils.LoggerFactory import LoggerFactory
 
-bot = commands.Bot(command_prefix="!", help_command=None)
+bot = commands.Bot(command_prefix=config.COMMAND_PREFIX, help_command=None)
 logger = LoggerFactory.get_logger()
 
 
