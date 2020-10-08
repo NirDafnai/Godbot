@@ -20,7 +20,7 @@ class CreateVoteCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.logger.info("Create vote ready")
+        self.logger.info("Create vote command ready")
 
     async def create_vote_message(self, vote_question, vote_seconds):
         vote_message = Embed(title="Poll",
@@ -41,7 +41,7 @@ class CreateVoteCog(commands.Cog):
         await message_sent.add_reaction(DISAGREE)
         return message_sent
 
-    @commands.command(name="create_vote", aliases=("cv", "createvote"))
+    @commands.command(name="create_vote", aliases=("cv", "createvote"), description="Creates a vote on a chosen topic.")
     async def create_vote(self, context: commands.Context, vote_seconds: int, *, vote_question: str):
         self.context = context
 

@@ -12,7 +12,7 @@ class SummonCog(commands.Cog):
     async def on_ready(self):
         self.logger.info("Summon command ready")
 
-    @commands.command(name="summon", aliases=("s",))
+    @commands.command(name="summon", aliases=("s",), description="Summon users to chat.")
     async def summon(self, context: commands.Context):
         await context.send(f"{context.author.display_name} is summoning @everyone")
 
