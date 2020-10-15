@@ -54,9 +54,10 @@ class CreateVoteCog(commands.Cog):
 
     async def end_poll(self, context: commands.Context, vote_message: Message, vote_question: str):
         live_message = await vote_message.channel.fetch_message(vote_message.id)
+        filtered_reactions = [reaction for reaction in live_message.reactions if reaction.emoji in [AGREE, DISAGREE]]
 
-        most_voted = max(live_message.reactions, key=lambda reactions: reactions.count)
-        least_voted = min(live_message.reactions, key=lambda reactions: reactions.count)
+        most_voted = max(filtered_reactions, key=lambda reactions: reactions.count)
+        least_voted = min(filtered_reactions, key=lambda reactions: reactions.count)
         await context.send(f"Question: {vote_question}\n\n{most_voted.emoji} - {most_voted.count - 1}\n\n"
                            f"{least_voted.emoji} - {least_voted.count - 1}")
         self.votes.remove(vote_message)
@@ -73,6 +74,7 @@ class CreateVoteCog(commands.Cog):
                     if payload.member in await reaction.users().flatten() and reaction.emoji != payload.emoji.name:
                         await live_message.remove_reaction(reaction.emoji, payload.member)
                 return
+
 
 
 def setup(bot):
